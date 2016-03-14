@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.pelletier.controller.LoginBar?>
+
+<VBox fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pelletier.controller.MainController">
+   <children>
+      <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="596.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+       <LoginBar/>
+      <HBox minHeight="-Infinity" prefHeight="377.0" prefWidth="903.0">
+         <children>
+            <TitledPane collapsible="false" text="Local Site">
+               <content>
+                  <Pane fx:id="localPane" maxHeight="1.7976931348623157E308" prefHeight="387.0" prefWidth="373.0" />
+               </content>
+            </TitledPane>
+            <TitledPane collapsible="false" text="Remote Site">
+               <content>
+                  <Pane fx:id="remotePane" maxHeight="1.7976931348623157E308" prefHeight="351.0" prefWidth="361.0" />
+               </content>
+            </TitledPane>
+            <TitledPane collapsible="false" text="Console">
+               <content>
+                  <Pane fx:id="console" prefHeight="377.0" prefWidth="162.0" />
+               </content>
+            </TitledPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <GridPane prefHeight="100.0" prefWidth="377.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" text="Upload" />
+                  <Button mnemonicParsing="false" text="Download" GridPane.rowIndex="1" />
+                  <ProgressBar prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ProgressBar prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </HBox>
+   </children>
+</VBox>

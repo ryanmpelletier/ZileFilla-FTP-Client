@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.geometry.*?>
+
+<fx:root prefHeight="37.0" prefWidth="904.0" type="javafx.scene.control.ToolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <items>
+        <Label text="Host" />
+        <TextField fx:id="host" prefHeight="25.0" prefWidth="100.0" />
+        <Label text="Port" />
+        <TextField fx:id="port" prefHeight="25.0" prefWidth="35.0" />
+        <Label text="Username" />
+        <TextField fx:id="username" prefHeight="25.0" prefWidth="100.0" />
+        <Label text="Password" />
+        <PasswordField fx:id="password" prefHeight="25.0" prefWidth="100.0" />
+        <ToggleButton fx:id="toggleButton" maxWidth="100" minWidth="100" mnemonicParsing="false" onAction="#connectOrDisconnect" onKeyPressed="#connectOrDisconnect" text="  Connect " textAlignment="CENTER" />
+        <TextField fx:id="loggedInUser" editable="false" prefHeight="25.0" prefWidth="130.0" translateX="110.0" />
+        <Circle fx:id="circle" fill="#ff1f1f" radius="11.0" stroke="TRANSPARENT" strokeLineJoin="ROUND" strokeType="INSIDE" translateX="110.0" />
+    </items>
+    <VBox.margin>
+        <Insets />
+    </VBox.margin>
+</fx:root>
