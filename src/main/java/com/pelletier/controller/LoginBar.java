@@ -1,7 +1,7 @@
 package com.pelletier.controller;
 
+
 import it.sauronsoftware.ftp4j.FTPClient;
-import it.sauronsoftware.ftp4j.FTPClientTasker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,11 +42,11 @@ public class LoginBar extends ToolBar {
 
     //I would love to create an interface for this so that any different FTPClient can be used
     //I want to use Spring Framework to inject this
-    FTPClientTasker ftpClientTasker;
+    FTPClient ftpClient;
 
     public void connectOrDisconnect(Event event){
         //I would like to have a function that basically can highlight things in red that are not filled in, a way to form validate
-        ftpClientTasker = new FTPClientTasker();
+        ftpClient = new FTPClient();
 
         TextField textField = new TextField();
         try{
@@ -57,10 +57,10 @@ public class LoginBar extends ToolBar {
                 toggleButton.setText("  Connect ");
                 connected = false;
             }else{
-                ftpClientTasker.connect(host.getText(),Integer.parseInt(port.getText()));
-                ftpClientTasker.login(username.getText(),password.getText());
+                ftpClient.connect(host.getText(),Integer.parseInt(port.getText()));
+                ftpClient.login(username.getText(),password.getText());
 
-                if(ftpClientTasker.isAuthenticated()){
+                if(ftpClient.isAuthenticated()){
                     loggedInUser.setText(username.getText());
                     circle.setFill(Paint.valueOf("green"));
                     toggleButton.setText("Disconnect");
