@@ -1,6 +1,8 @@
 package com.pelletier.util;
 
-import com.pelletier.components.DirectoryView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
@@ -16,35 +18,33 @@ import java.util.stream.Collectors;
  */
 public class DirectoryViewManager {
 
-    String path = "C:/";
+    String startingPath = "C:/";
     String currentFilePath;
+    TreeView<String> treeView;
+    TitledPane titledPane;
 
-    public void populateLocalDirectoryView(TreeView<String> treeView){
+    public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView){
+        this.titledPane = titledPane;
+        titledPane.setText("Local Site: ");
+        this.treeView = treeView;
+    }
 
-        TreeItem<String> root = new TreeItem<>(path, new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+    public void populateLocalDirectoryView(){
+
+        TreeItem<String> root = new TreeItem<>(startingPath, new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
 
         treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            File file = new File(path);
+            currentFilePath = (buildCurrentFilePathFromTreeItem((TreeItem<String>) observable.getValue()));   //it doesn't seem like this is updating the title pane
+            titledPane.setText("Local Site: " + currentFilePath);//this won't do anything unfortunately
+            File file = new File(currentFilePath);
             if(file.listFiles() != null){
-//                addTreeItems(observable.getValue(), directoryView.getCurrentFilePath());
-//                addTreeItems(observable.getValue(), path);    //This is basically where you say, starting at this path, add all the children
-                System.out.println("Also be updating the title pane here");
-                System.out.println("Would be adding items here");
+                addTreeItems(observable.getValue(), currentFilePath);
             }
         });
 
         treeView.setRoot(root);
-        addTreeItems(root,path);
+        addTreeItems(root, startingPath);
         root.setExpanded(false);
-    }
-
-    public void testTreeView(TreeView<String> treeView){
-        TreeItem<String> root = new TreeItem<>("Root");
-        for(int i = 0; i < 10; i++){
-            root.getChildren().add(new TreeItem<String>("test" + i));
-        }
-
-        treeView.setRoot(root);
     }
 
     private  void addTreeItems(TreeItem<String> treeItem, String filePath){
@@ -56,11 +56,25 @@ public class DirectoryViewManager {
 
         for(File file: files){
             if(file.isDirectory()){
-                //also put a temp child on it??
+                //put a temp child, we will need to not allow clicking on the temp child
+                //maybe don't add temp, and find a way to show arrow
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG")))));
             }else{
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/file.PNG")))));
             }
         }
+    }
+
+    public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
+        if(treeItem == null){
+            return "";
+        }
+        if(treeItem.getParent() == null){
+            return treeItem.getValue();
+        }
+        if(treeItem.getParent().getValue().equals("C:/")){
+            return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + treeItem.getValue();
+        }
+        return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + "/" + treeItem.getValue();
     }
 }
