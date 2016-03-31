@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import com.pelletier.controller.LoginBar?>
+<?import com.pelletier.controller.DirectoryViewController?>
 
 <VBox fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pelletier.controller.MainController">
    <children>
@@ -29,16 +30,8 @@
        <LoginBar/>
       <HBox minHeight="-Infinity" prefHeight="377.0" prefWidth="903.0">
          <children>
-            <TitledPane collapsible="false" text="Local Site">
-               <content>
-                  <Pane fx:id="localPane" maxHeight="1.7976931348623157E308" prefHeight="387.0" prefWidth="373.0" />
-               </content>
-            </TitledPane>
-            <TitledPane collapsible="false" text="Remote Site">
-               <content>
-                  <Pane fx:id="remotePane" maxHeight="1.7976931348623157E308" prefHeight="351.0" prefWidth="361.0" />
-               </content>
-            </TitledPane>
+            <DirectoryViewController fx:id="localDirectoryView" />
+            <DirectoryViewController fx:id="remoteDirectoryView" />
             <TitledPane collapsible="false" text="Console">
                <content>
                   <Pane fx:id="console" prefHeight="377.0" prefWidth="162.0" />
