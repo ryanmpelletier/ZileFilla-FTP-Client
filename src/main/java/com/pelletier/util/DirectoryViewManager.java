@@ -1,7 +1,8 @@
 package com.pelletier.util;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -29,25 +30,28 @@ public class DirectoryViewManager {
         this.treeView = treeView;
     }
 
-    public void populateLocalDirectoryView(){
 
+    public void populateLocalDirectoryView(){
         TreeItem<String> root = new TreeItem<>(startingPath, new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
 
-        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            currentFilePath = (buildCurrentFilePathFromTreeItem((TreeItem<String>) observable.getValue()));   //it doesn't seem like this is updating the title pane
+        //add listener for clicks on treeItems, I want it to do the same thing for an expand on a tree item
+        treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
+            currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
             titledPane.setText("Local Site: " + currentFilePath);//this won't do anything unfortunately
             File file = new File(currentFilePath);
             if(file.listFiles() != null){
-                addTreeItems(observable.getValue(), currentFilePath);
+                addTreeItems(treeItem.getValue(), currentFilePath);
             }
         });
+
 
         treeView.setRoot(root);
         addTreeItems(root, startingPath);
         root.setExpanded(false);
     }
 
-    private  void addTreeItems(TreeItem<String> treeItem, String filePath){
+    //given a tree item and an absolute filePath, creates children for given tree item from list of files from filePath
+    private void addTreeItems(TreeItem<String> treeItem, String filePath){
         treeItem.getChildren().remove(0, treeItem.getChildren().size());
         File rootFile = new File(filePath);
         List<File> files = Arrays.asList(rootFile.listFiles()).stream().filter(file1 -> {
@@ -58,13 +62,31 @@ public class DirectoryViewManager {
             if(file.isDirectory()){
                 //put a temp child, we will need to not allow clicking on the temp child
                 //maybe don't add temp, and find a way to show arrow
-                treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG")))));
+                TreeItem<String> directoryTreeItem = new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+                directoryTreeItem.expandedProperty().addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        BooleanProperty booleanProperty = (BooleanProperty) observable;
+                        TreeItem<String> t = (TreeItem<String>) booleanProperty.getBean();
+                        if(!newValue){
+                            t.getChildren().remove(0, t.getChildren().size());
+                            t.getChildren().add(new TreeItem<String>(""));
+                        }else{
+                            currentFilePath = buildCurrentFilePathFromTreeItem(t);  //it doesn't seem like this is updating the title pane
+                            addTreeItems(t, currentFilePath);
+                        }
+                    }
+                });
+                directoryTreeItem.getChildren().add(new TreeItem<>(""));
+                treeItem.getChildren().add(directoryTreeItem);
             }else{
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/file.PNG")))));
             }
         }
     }
 
+
+    //Gets a treeItem, follows its parents up the hierarchy, building a string for the absolute path
     public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
         if(treeItem == null){
             return "";
