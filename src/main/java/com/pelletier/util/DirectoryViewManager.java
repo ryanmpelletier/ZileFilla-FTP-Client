@@ -2,6 +2,7 @@ package com.pelletier.util;
 
 import com.pelletier.components.DirectoryView;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -13,28 +14,37 @@ import java.util.stream.Collectors;
 /**
  * Created by ryanb on 3/14/2016.
  */
-public class DirectoryViewUtil {
+public class DirectoryViewManager {
 
     String path = "C:/";
+    String currentFilePath;
 
-    public DirectoryView<String> getDirectoryView(){
+    public void populateLocalDirectoryView(TreeView<String> treeView){
 
-        DirectoryView<String> directoryView = new DirectoryView<>(path);
         TreeItem<String> root = new TreeItem<>(path, new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
 
-        directoryView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            File file = new File(directoryView.getCurrentFilePath());
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            File file = new File(path);
             if(file.listFiles() != null){
-                addTreeItems(observable.getValue(), directoryView.getCurrentFilePath());
+//                addTreeItems(observable.getValue(), directoryView.getCurrentFilePath());
+//                addTreeItems(observable.getValue(), path);    //This is basically where you say, starting at this path, add all the children
+                System.out.println("Also be updating the title pane here");
+                System.out.println("Would be adding items here");
             }
         });
 
-        directoryView.setRoot(root);
-
+        treeView.setRoot(root);
         addTreeItems(root,path);
-
         root.setExpanded(false);
-        return directoryView;
+    }
+
+    public void testTreeView(TreeView<String> treeView){
+        TreeItem<String> root = new TreeItem<>("Root");
+        for(int i = 0; i < 10; i++){
+            root.getChildren().add(new TreeItem<String>("test" + i));
+        }
+
+        treeView.setRoot(root);
     }
 
     private  void addTreeItems(TreeItem<String> treeItem, String filePath){
@@ -46,6 +56,7 @@ public class DirectoryViewUtil {
 
         for(File file: files){
             if(file.isDirectory()){
+                //also put a temp child on it??
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG")))));
             }else{
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/file.PNG")))));
