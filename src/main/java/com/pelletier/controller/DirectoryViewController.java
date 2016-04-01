@@ -4,11 +4,9 @@ import com.pelletier.util.DirectoryViewManager;
 import com.pelletier.util.LocalDirectoryViewManager;
 import com.pelletier.util.RemoteDirectoryViewManager;
 import javafx.beans.NamedArg;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.IOException;

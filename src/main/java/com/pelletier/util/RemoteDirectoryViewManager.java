@@ -33,7 +33,7 @@ public class RemoteDirectoryViewManager extends DirectoryViewManager {
 
         //add listener for clicks on treeItems, I want it to do the same thing for an expand on a tree item
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
-            currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
+//            currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
             titledPane.setText("Local Site: " + getCurrentPath());
             File file = new File(getCurrentPath());
             if(file.listFiles() != null){
@@ -68,7 +68,7 @@ public class RemoteDirectoryViewManager extends DirectoryViewManager {
                             t.getChildren().remove(0, t.getChildren().size());
                             t.getChildren().add(new TreeItem<String>(""));
                         }else{
-                            currentFilePath = buildCurrentFilePathFromTreeItem(t);  //it doesn't seem like this is updating the title pane
+//                            currentFilePath = buildCurrentFilePathFromTreeItem(t);  //it doesn't seem like this is updating the title pane
                             addTreeItems(t, getCurrentPath());
                         }
                     }
