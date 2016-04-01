@@ -1,5 +1,6 @@
 package com.pelletier.util;
 
+import it.sauronsoftware.ftp4j.FTPClient;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,33 +18,22 @@ import java.util.stream.Collectors;
 /**
  * Created by ryanb on 3/14/2016.
  */
-public class LocalDirectoryViewManager {
+
+//TODO Be able to handle empty directories?
+public class LocalDirectoryViewManager extends DirectoryViewManager {
 
     String currentFilePath = "C:/";
-    TreeView<String> treeView;
-    TitledPane titledPane;
-
-    /*
-        I basically need something that can provide a list of items, these items will need to be able to tell me
-        1. is it a directory?
-        2. am I hidden?
-        3. what are my children (the children are these items)
-        4. Would really like to have remoteFileProvider and localFileProvider, (These should really operate with String parameters only)
-        5. I would like the only difference between my directoryViewManagers to be which fileProvider is "injected" into them
-     */
-
 
     public LocalDirectoryViewManager(TitledPane titledPane, TreeView<String> treeView){
-        this.titledPane = titledPane;
+        super(titledPane,treeView);
         titledPane.setText("Local Site: ");
-        this.treeView = treeView;
     }
 
 
+    @Override
     public void populateDirectoryView(){
         TreeItem<String> root = new TreeItem<>(currentFilePath, new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
-        //add listener for clicks on treeItems, I want it to do the same thing for an expand on a tree item
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
             currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
             titledPane.setText("Local Site: " + currentFilePath);
@@ -91,20 +81,5 @@ public class LocalDirectoryViewManager {
                 treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/images/file.PNG")))));
             }
         }
-    }
-
-    //Gets a treeItem, follows its parents up the hierarchy, building a string for the absolute path
-    //this is safe from either local or remote fileProvider, only uses tree items
-    public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
-        if(treeItem == null){
-            return "";
-        }
-        if(treeItem.getParent() == null){
-            return treeItem.getValue();
-        }
-        if(treeItem.getParent().getValue().equals("C:/")){
-            return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + treeItem.getValue();
-        }
-        return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + "/" + treeItem.getValue();
     }
 }
