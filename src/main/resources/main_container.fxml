@@ -30,8 +30,8 @@
        <LoginBar/>
       <HBox minHeight="-Infinity" prefHeight="377.0" prefWidth="903.0">
          <children>
-            <DirectoryViewController fx:id="localDirectoryView" />
-            <DirectoryViewController fx:id="remoteDirectoryView" />
+            <DirectoryViewController type="local" fx:id="localDirectoryView" />
+            <!--<DirectoryViewController type="remote" fx:id="remoteDirectoryView" />-->
             <TitledPane collapsible="false" text="Console">
                <content>
                   <Pane fx:id="console" prefHeight="377.0" prefWidth="162.0" />
