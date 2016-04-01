@@ -24,6 +24,16 @@ public class DirectoryViewManager {
     TreeView<String> treeView;
     TitledPane titledPane;
 
+    /*
+        I basically need something that can provide a list of items, these items will need to be able to tell me
+        1. is it a directory?
+        2. am I hidden?
+        3. what are my children (the children are these items)
+        4. Would really like to have remoteFileProvider and localFileProvider, (These should really operate with String parameters only)
+        5. I would like the only difference between my directoryViewManagers to be which fileProvider is "injected" into them
+     */
+
+
     public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView){
         this.titledPane = titledPane;
         titledPane.setText("Local Site: ");
@@ -32,12 +42,12 @@ public class DirectoryViewManager {
 
 
     public void populateLocalDirectoryView(){
-        TreeItem<String> root = new TreeItem<>(startingPath, new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+        TreeItem<String> root = new TreeItem<>(startingPath, new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
         //add listener for clicks on treeItems, I want it to do the same thing for an expand on a tree item
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
             currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
-            titledPane.setText("Local Site: " + currentFilePath);//this won't do anything unfortunately
+            titledPane.setText("Local Site: " + currentFilePath);
             File file = new File(currentFilePath);
             if(file.listFiles() != null){
                 addTreeItems(treeItem.getValue(), currentFilePath);
@@ -60,9 +70,8 @@ public class DirectoryViewManager {
 
         for(File file: files){
             if(file.isDirectory()){
-                //put a temp child, we will need to not allow clicking on the temp child
-                //maybe don't add temp, and find a way to show arrow
-                TreeItem<String> directoryTreeItem = new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+
+                TreeItem<String> directoryTreeItem = new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
                 directoryTreeItem.expandedProperty().addListener(new ChangeListener<Boolean>() {
                     @Override
                     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -80,11 +89,10 @@ public class DirectoryViewManager {
                 directoryTreeItem.getChildren().add(new TreeItem<>(""));
                 treeItem.getChildren().add(directoryTreeItem);
             }else{
-                treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/file.PNG")))));
+                treeItem.getChildren().add(new TreeItem<>(file.getName(), new ImageView(new Image(getClass().getResourceAsStream("/images/file.PNG")))));
             }
         }
     }
-
 
     //Gets a treeItem, follows its parents up the hierarchy, building a string for the absolute path
     public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
