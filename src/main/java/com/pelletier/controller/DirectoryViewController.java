@@ -14,24 +14,18 @@ import java.io.IOException;
 /**
  * Created by ryanb on 3/31/2016.
  *
- * This needs to be able to handle a "user logged in event"
+ * When the SimpleBooleanProperty changes on the login bar this needs to population
  */
 public class DirectoryViewController extends TitledPane {
     public String type;
     @FXML public TreeView<String> directoryView;
-
+    DirectoryViewManager directoryViewManager = null;
 
     public void initialize(){
-        DirectoryViewManager directoryViewManager = null;
-        if(type.equals("local")) {
+        if(type.equals("local")) {//if local we can initialize now
             directoryViewManager = new DirectoryViewManager(this, directoryView, "C:/", new LocalFileItemProvider());
             directoryViewManager.populateDirectoryView();
         }
-        else if(type.equals("remote")){
-            directoryViewManager = new DirectoryViewManager(this,directoryView, "/", new RemoteFileItemProvider());
-            //add event handler that says we populate with a given FTP when fired. (We actually may want to have this handler in MainController
-        }
-
     }
 
     public DirectoryViewController(@NamedArg("type") String type){
@@ -47,5 +41,21 @@ public class DirectoryViewController extends TitledPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public DirectoryViewManager getDirectoryViewManager() {
+        return directoryViewManager;
+    }
+
+    public void setDirectoryViewManager(DirectoryViewManager directoryViewManager) {
+        this.directoryViewManager = directoryViewManager;
+    }
+
+    public TreeView<String> getDirectoryView() {
+        return directoryView;
+    }
+
+    public void setDirectoryView(TreeView<String> directoryView) {
+        this.directoryView = directoryView;
     }
 }
