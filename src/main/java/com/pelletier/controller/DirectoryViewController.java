@@ -1,8 +1,8 @@
 package com.pelletier.controller;
 
 import com.pelletier.util.DirectoryViewManager;
-import com.pelletier.util.LocalDirectoryViewManager;
-import com.pelletier.util.RemoteDirectoryViewManager;
+import com.pelletier.util.LocalFileItemProvider;
+import com.pelletier.util.RemoteFileItemProvider;
 import javafx.beans.NamedArg;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Created by ryanb on 3/31/2016.
+ *
+ * This needs to be able to handle a "user logged in event"
  */
 public class DirectoryViewController extends TitledPane {
     public String type;
@@ -21,12 +23,15 @@ public class DirectoryViewController extends TitledPane {
 
     public void initialize(){
         DirectoryViewManager directoryViewManager = null;
-        if(type.equals("local"))
-             directoryViewManager = new LocalDirectoryViewManager(this, directoryView);
-        else if(type.equals("remote"))
-            directoryViewManager = new RemoteDirectoryViewManager(this,directoryView);
+        if(type.equals("local")) {
+            directoryViewManager = new DirectoryViewManager(this, directoryView, "C:/", new LocalFileItemProvider());
+            directoryViewManager.populateDirectoryView();
+        }
+        else if(type.equals("remote")){
+            directoryViewManager = new DirectoryViewManager(this,directoryView, "/", new RemoteFileItemProvider());
+            //add event handler that says we populate with a given FTP when fired. (We actually may want to have this handler in MainController
+        }
 
-        directoryViewManager.populateDirectoryView();
     }
 
     public DirectoryViewController(@NamedArg("type") String type){
