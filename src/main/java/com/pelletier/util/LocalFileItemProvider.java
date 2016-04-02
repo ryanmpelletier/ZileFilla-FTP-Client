@@ -10,27 +10,10 @@ import java.util.stream.Collectors;
  */
 public class LocalFileItemProvider implements FileItemProvider {
     @Override
-    public boolean isHidden(String path) {
-        File file = new File(path);
-        return file.isHidden();
-    }
-
-    @Override
     public boolean isDirectory(String path) {
         File file = new File(path);
         return file.isDirectory();
     }
-
-    @Override
-    public boolean canRead(String path) {
-        File file = new File(path);
-        return file.canRead();
-    }
-
-    @Override
-    public boolean canWrite(String path) {
-        File file = new File(path);
-        return file.canWrite();    }
 
     @Override
     public String getName(String path) {
@@ -41,6 +24,12 @@ public class LocalFileItemProvider implements FileItemProvider {
     @Override
     public List<String> children(String path) {
         File file = new File(path);
-        return Arrays.asList(file.listFiles()).stream().map(File::getName).collect(Collectors.toList());
+        File[] files = file.listFiles();
+        if(files == null){
+            return null;
+        }
+        return Arrays.asList(files).stream().filter(file1 -> {
+            return (!file1.getName().equals("Documents and Settings")) && !file1.isHidden() && (file1.isDirectory() || file1.isFile() && file1.canRead() && file1.canWrite());
+        }).map(File::getAbsolutePath).collect(Collectors.toList());
     }
 }

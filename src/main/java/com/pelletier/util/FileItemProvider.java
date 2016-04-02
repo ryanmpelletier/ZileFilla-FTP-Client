@@ -9,10 +9,7 @@ import java.util.List;
  */
 public interface FileItemProvider {
 
-    public boolean isHidden(String path);
     public boolean isDirectory(String path);
-    public boolean canRead(String path);
-    public boolean canWrite(String path);
     public String getName(String path);
     public List<String> children(String path);
 
