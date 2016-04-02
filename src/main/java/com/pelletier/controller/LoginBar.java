@@ -2,6 +2,8 @@ package com.pelletier.controller;
 
 
 import it.sauronsoftware.ftp4j.FTPClient;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,9 @@ public class LoginBar extends ToolBar {
     @FXML private Circle circle;
     @FXML private ToggleButton toggleButton;
 
+    BooleanProperty isLoggedIn = new SimpleBooleanProperty();
+
+
     public LoginBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/login_bar.fxml"));
         fxmlLoader.setRoot(this);
@@ -38,24 +43,19 @@ public class LoginBar extends ToolBar {
         }
     }
 
-    boolean connected = false;
-
-    //I would love to create an interface for this so that any different FTPClient can be used
-    //I want to use Spring Framework to inject this
     FTPClient ftpClient;
 
     public void connectOrDisconnect(Event event){
-        //I would like to have a function that basically can highlight things in red that are not filled in, a way to form validate
         ftpClient = new FTPClient();
 
         TextField textField = new TextField();
         try{
-            if(connected){
+            if(getIsLoggedIn()){
                 //disconnect logic (probably clear user in "session")
                 loggedInUser.setText("");
                 circle.setFill(Paint.valueOf("red"));
                 toggleButton.setText("  Connect ");
-                connected = false;
+                isLoggedIn.setValue(false);
             }else{
                 ftpClient.connect(host.getText(),Integer.parseInt(port.getText()));
                 ftpClient.login(username.getText(),password.getText());
@@ -64,9 +64,9 @@ public class LoginBar extends ToolBar {
                     loggedInUser.setText(username.getText());
                     circle.setFill(Paint.valueOf("green"));
                     toggleButton.setText("Disconnect");
-                    connected = true;
+                    isLoggedIn.setValue(true);
                 }else{
-                    //client could not connect
+                    System.out.println("Crap dude we aren't authenticated!");
                 }
             }
 
@@ -76,4 +76,15 @@ public class LoginBar extends ToolBar {
 
     }
 
+    public FTPClient getFtpClient() {
+        return ftpClient;
+    }
+
+    public boolean getIsLoggedIn() {
+        return isLoggedIn.get();
+    }
+
+    public BooleanProperty isLoggedInProperty() {
+        return isLoggedIn;
+    }
 }
