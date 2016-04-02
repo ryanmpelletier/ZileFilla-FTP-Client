@@ -86,4 +86,8 @@ public class DirectoryViewManager {
         }
         return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + "/" + treeItem.getValue();
     }
+
+    public void setFileItemProvider(FileItemProvider fileItemProvider) {
+        this.fileItemProvider = fileItemProvider;
+    }
 }
