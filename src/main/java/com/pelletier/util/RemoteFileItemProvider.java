@@ -11,7 +11,11 @@ import java.util.List;
  */
 public class RemoteFileItemProvider implements FileItemProvider {
 
-    FTPClient ftpClient;
+    public FTPClient ftpClient;
+
+    public RemoteFileItemProvider(FTPClient ftpClient){
+        this.ftpClient = ftpClient;
+    }
 
     @Override
     public boolean isDirectory(String path) {
@@ -30,7 +34,7 @@ public class RemoteFileItemProvider implements FileItemProvider {
 
             }
         }catch(Exception e){
-            System.out.println("Crapppp!");
+            e.printStackTrace();
             return false;
         }
         return false;
