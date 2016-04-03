@@ -18,8 +18,6 @@ public class MainController {
             if(loggedIn){
                 remoteDirectoryView.setDirectoryViewManager(new DirectoryViewManager(remoteDirectoryView, remoteDirectoryView.getDirectoryView(), "/", new RemoteFileItemProvider(loginBar.getFtpClient())));
                 remoteDirectoryView.getDirectoryViewManager().populateDirectoryView();
-            }else{
-                //reset the directory view
             }
         });
     }

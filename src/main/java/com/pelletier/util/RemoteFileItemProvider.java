@@ -9,10 +9,9 @@ import java.util.List;
 
 /**
  * Created by ryanb on 4/1/2016.
- * Problems
- * 1. Trying to find children of paths that are not directories!
- * 2. May also need to set currentDirectory to what it was before function.
  */
+
+
 public class RemoteFileItemProvider implements FileItemProvider {
 
     public FTPClient ftpClient;
@@ -23,27 +22,12 @@ public class RemoteFileItemProvider implements FileItemProvider {
 
     @Override
     public boolean isDirectory(String path) {
-        if(path.equals("/")){   //this covers that "case" of me being in the root directory
-            return true;
-        }
-        System.out.println("Is Directory Path " + path);
-        String fileName = getName(path);    //can't call getName if path is "/"
         try{
             ftpClient.changeDirectory(path);
-            ftpClient.changeDirectoryUp();
-            FTPFile[] ftpFiles = ftpClient.list();//TODO
-            for(int i = 0; i < ftpFiles.length; i++){
-                if(ftpFiles[i].getName().equals(fileName)){
-                    return ftpFiles[i].getType() == 1;
-                }
-            }
-
-        }catch(Exception e){
-            System.out.println("Path: " +path);
-            e.printStackTrace();
+            return true;
+        }catch (Exception e){
             return false;
         }
-        return false;
     }
 
     @Override
@@ -53,27 +37,36 @@ public class RemoteFileItemProvider implements FileItemProvider {
 
     @Override
     public List<String> children(String path) { //needs to return absolute paths
-        if(!path.equals("/") && !isDirectory(path)){
-            return null;
-        }
-        System.out.println("Children Path: " + path);
-        String[] children = null;
-        try{
-            ftpClient.changeDirectory(path);    //won't be able to change directly to this directory, actually yes we will because this should be a directory! (this may be throwing my error)
-            children = ftpClient.listNames();
-            for(int i = 0; i < children.length; i++){
-                if(path.equals("/")){
-                    children[i] = "/" + children[i];   //this might be janky
-                }else{
-                    children[i] = path + "/" + children[i];
+        List<String> listOfChildren = null;
+        int numberOfRetries = 0;
+
+        if(isDirectory(path)){
+            while(listOfChildren == null && (numberOfRetries <= 3)){
+                String[] children = null;
+                try{
+                    ftpClient.changeDirectory(path);    //won't be able to change directly to this directory, actually yes we will because this should be a directory! (this may be throwing my error)
+                    children = ftpClient.listNames();
+                    if(children != null){
+                        for(int i = 0; i < children.length; i++){
+                            if(path.equals("/")){
+                                children[i] = "/" + children[i];   //this might be janky
+                            }else{
+                                children[i] = path + "/" + children[i];
+                            }
+                        }
+                        listOfChildren = Arrays.asList(children);
+                    }else{
+                        return null;
+                    }
+                }catch(Exception e){
+                    System.out.println(path);
+                    numberOfRetries++;
                 }
             }
-        }catch(Exception e){
-            System.out.println("Path: " + path);
-            e.printStackTrace();
         }
-        return Arrays.asList(children);
+        return listOfChildren;
     }
+
 
     public void setFtpClient(FTPClient ftpClient) {
         this.ftpClient = ftpClient;
