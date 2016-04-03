@@ -46,7 +46,7 @@ public class DirectoryViewManager {
 
     private void addTreeItems(TreeItem<String> treeItem, String filePath){
         treeItem.getChildren().remove(0, treeItem.getChildren().size());
-        for(String absoluteFilePath: fileItemProvider.children(currentFilePath)){   //may want to return absolute paths of children, not just their names
+        for(String absoluteFilePath: fileItemProvider.children(currentFilePath)){   //if children is null, don't try to add items!
             if(fileItemProvider.isDirectory(absoluteFilePath)){
 
                 TreeItem<String> directoryTreeItem = new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
@@ -72,8 +72,8 @@ public class DirectoryViewManager {
         }
     }
 
-    //Gets a treeItem, follows its parents up the hierarchy, building a string for the absolute path
-    //this is safe from either local or remote fileProvider, only uses tree items
+
+    //TODO Change this so that it works with remote as well
     public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
         if(treeItem == null){
             return "";
@@ -81,7 +81,7 @@ public class DirectoryViewManager {
         if(treeItem.getParent() == null){
             return treeItem.getValue();
         }
-        if(treeItem.getParent().getValue().equals("C:/")){
+        if(treeItem.getParent().getValue().equals("C:/") || treeItem.getParent().getValue().equals("/")){
             return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + treeItem.getValue();
         }
         return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + "/" + treeItem.getValue();
