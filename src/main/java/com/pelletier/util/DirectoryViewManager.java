@@ -25,7 +25,7 @@ public class DirectoryViewManager {
 
     public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView, String currentFilePath, FileItemProvider fileItemProvider){
         this.titledPane = titledPane;
-        System.out.println(this.titledPane.hashCode() + "   " + this.toString() + "    " + this.currentFilePath.hashCode());
+        System.out.println("Directory View Manager " + this);
         this.titledPane.textProperty().bind(this.currentFilePath);
         this.treeView = treeView;
         this.currentFilePath.setValue(currentFilePath);
@@ -36,8 +36,8 @@ public class DirectoryViewManager {
         TreeItem<String> root = new TreeItem<>(currentFilePath.get(), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
-            System.out.println(currentFilePath.getValue());
             currentFilePath.setValue(buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue()));   //it doesn't seem like this is updating the title pane
+            System.out.println(currentFilePath.getValue());
             if(fileItemProvider.children(currentFilePath.get()) != null){
                 addTreeItems(treeItem.getValue(), currentFilePath.get());
             }

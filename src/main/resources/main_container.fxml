@@ -6,6 +6,7 @@
 <?import com.pelletier.controller.LoginBar?>
 <?import com.pelletier.controller.DirectoryViewController?>
 
+<?import com.pelletier.controller.ConsoleController?>
 <VBox fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pelletier.controller.MainController">
    <children>
       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="596.0">
@@ -32,11 +33,7 @@
          <children>
             <DirectoryViewController type="local" fx:id="localDirectoryView" />
             <DirectoryViewController type="remote" fx:id="remoteDirectoryView" />
-            <TitledPane collapsible="false" text="Console">
-               <content>
-                  <Pane fx:id="console" prefHeight="377.0" prefWidth="162.0" />
-               </content>
-            </TitledPane>
+            <ConsoleController/>
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">

@@ -29,8 +29,8 @@ public class LoginBar extends ToolBar {
     @FXML private Circle circle;
     @FXML private ToggleButton toggleButton;
 
-    BooleanProperty isLoggedIn = new SimpleBooleanProperty();
 
+    BooleanProperty isLoggedIn = new SimpleBooleanProperty();
 
     public LoginBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/login_bar.fxml"));

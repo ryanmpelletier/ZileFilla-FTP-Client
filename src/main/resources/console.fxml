@@ -1,0 +1,6 @@
+<?import javafx.scene.control.TextArea?>
+<fx:root prefHeight="387.0" prefWidth="373.0" type="javafx.scene.control.TitledPane" collapsible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" text="Console">
+    <content>
+        <TextArea  fx:id="console" prefHeight="377.0" prefWidth="162.0" />
+    </content>
+</fx:root>

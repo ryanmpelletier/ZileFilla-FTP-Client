@@ -1,7 +1,6 @@
 package com.pelletier.util;
 
 import it.sauronsoftware.ftp4j.FTPClient;
-import it.sauronsoftware.ftp4j.FTPFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +34,7 @@ public class RemoteFileItemProvider implements FileItemProvider {
     }
 
     @Override
-    public List<String> children(String path) { //needs to return absolute paths
+    public List<String> children(String path) {
         List<String> listOfChildren = null;
         int numberOfRetries = 0;
 
@@ -58,7 +57,6 @@ public class RemoteFileItemProvider implements FileItemProvider {
                         return null;
                     }
                 }catch(Exception e){
-                    System.out.println(path);
                     numberOfRetries++;
                 }
             }
