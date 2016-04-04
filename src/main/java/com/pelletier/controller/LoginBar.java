@@ -1,6 +1,7 @@
 package com.pelletier.controller;
 
 
+import com.pelletier.util.ConsoleManager;
 import it.sauronsoftware.ftp4j.FTPClient;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,6 +14,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
+import java.io.Console;
 import java.io.IOException;
 
 /**
@@ -43,24 +45,25 @@ public class LoginBar extends ToolBar {
         }
     }
 
-    FTPClient ftpClient;
+    FTPClient ftpClient = new FTPClient();
 
     public void connectOrDisconnect(Event event){
-        ftpClient = new FTPClient();
 
         TextField textField = new TextField();
         try{
             if(getIsLoggedIn()){
-                //disconnect logic (probably clear user in "session")
+                ftpClient.disconnect(true); //not sure what this does
                 loggedInUser.setText("");
                 circle.setFill(Paint.valueOf("red"));
                 toggleButton.setText("  Connect ");
                 isLoggedIn.setValue(false);
+                ConsoleManager.writeText("Disconnected");
             }else{
                 ftpClient.connect(host.getText(),Integer.parseInt(port.getText()));
                 ftpClient.login(username.getText(),password.getText());
 
                 if(ftpClient.isAuthenticated()){
+                    ConsoleManager.writeText("Connected");
                     loggedInUser.setText(username.getText());
                     circle.setFill(Paint.valueOf("green"));
                     toggleButton.setText("Disconnect");

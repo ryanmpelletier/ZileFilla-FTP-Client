@@ -13,16 +13,15 @@ import java.io.IOException;
 
 /**
  * Created by ryanb on 3/31/2016.
- *
- * When the SimpleBooleanProperty changes on the login bar this needs to population
  */
 public class DirectoryViewController extends TitledPane {
+
     public String type;
     @FXML public TreeView<String> directoryView;
     DirectoryViewManager directoryViewManager = null;
 
     public void initialize(){
-        if(type.equals("local")) {//if local we can initialize now
+        if(type.equals("local")) {
             directoryViewManager = new DirectoryViewManager(this, directoryView, "C:/", new LocalFileItemProvider());
             directoryViewManager.populateDirectoryView();
         }

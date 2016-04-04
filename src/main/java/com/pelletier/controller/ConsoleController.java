@@ -1,5 +1,6 @@
 package com.pelletier.controller;
 
+import com.pelletier.util.ConsoleManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -14,6 +15,14 @@ import java.io.IOException;
 public class ConsoleController extends TitledPane{
 
     @FXML TextArea console;
+
+    public void initialize(){
+        ConsoleManager.hasNewTextProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                console.appendText(ConsoleManager.getNewText() + "\n");
+            }
+        });
+    }
 
     public ConsoleController(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/console.fxml"));

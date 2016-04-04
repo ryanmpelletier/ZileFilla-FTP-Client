@@ -6,12 +6,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TitledPane;
 
 
 public class MainController {
 
     @FXML public LoginBar loginBar;
+    @FXML public ActionBar actionBar;
     @FXML public DirectoryViewController localDirectoryView;
     @FXML public DirectoryViewController remoteDirectoryView;
     @FXML public TextArea console;
@@ -19,8 +19,11 @@ public class MainController {
     public void initialize(){
         loginBar.isLoggedInProperty().addListener((observable, loggedOut, loggedIn) -> {
             if(loggedIn){
-                remoteDirectoryView.setDirectoryViewManager(new DirectoryViewManager((TitledPane) remoteDirectoryView, remoteDirectoryView.getDirectoryView(), "/", new RemoteFileItemProvider(loginBar.getFtpClient())));
+                remoteDirectoryView.setDirectoryViewManager(new DirectoryViewManager(remoteDirectoryView, remoteDirectoryView.getDirectoryView(), "/", new RemoteFileItemProvider(loginBar.getFtpClient())));
                 remoteDirectoryView.getDirectoryViewManager().populateDirectoryView();
+                actionBar.setFtpClient(loginBar.getFtpClient());
+                actionBar.localFilePathProperty().bind(localDirectoryView.getDirectoryViewManager().currentFilePathProperty());
+                actionBar.remoteFilePathProperty().bind(remoteDirectoryView.getDirectoryViewManager().currentFilePathProperty());
             }
         });
     }

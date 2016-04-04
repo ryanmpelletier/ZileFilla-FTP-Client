@@ -25,7 +25,6 @@ public class DirectoryViewManager {
 
     public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView, String currentFilePath, FileItemProvider fileItemProvider){
         this.titledPane = titledPane;
-        System.out.println("Directory View Manager " + this);
         this.titledPane.textProperty().bind(this.currentFilePath);
         this.treeView = treeView;
         this.currentFilePath.setValue(currentFilePath);
@@ -37,7 +36,6 @@ public class DirectoryViewManager {
 
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
             currentFilePath.setValue(buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue()));   //it doesn't seem like this is updating the title pane
-            System.out.println(currentFilePath.getValue());
             if(fileItemProvider.children(currentFilePath.get()) != null){
                 addTreeItems(treeItem.getValue(), currentFilePath.get());
             }
@@ -53,7 +51,7 @@ public class DirectoryViewManager {
         treeItem.getChildren().remove(0, treeItem.getChildren().size());
         List<String> childrenAbsolutePaths = fileItemProvider.children(currentFilePath.get());
         if(childrenAbsolutePaths != null){
-            for(String absoluteFilePath: childrenAbsolutePaths){   //if children is null, don't try to add items!
+            for(String absoluteFilePath: childrenAbsolutePaths){
                 if(fileItemProvider.isDirectory(absoluteFilePath)){
 
                     TreeItem<String> directoryTreeItem = new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
@@ -95,5 +93,13 @@ public class DirectoryViewManager {
 
     public void setFileItemProvider(FileItemProvider fileItemProvider) {
         this.fileItemProvider = fileItemProvider;
+    }
+
+    public String getCurrentFilePath() {
+        return currentFilePath.get();
+    }
+
+    public StringProperty currentFilePathProperty() {
+        return currentFilePath;
     }
 }
