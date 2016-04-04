@@ -1,27 +1,85 @@
 package com.pelletier.util;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.util.List;
 
 /**
  * Created by ryanb on 3/31/2016.
  */
-public abstract class DirectoryViewManager {
+public class DirectoryViewManager {
 
     public TreeView<String> treeView;
     public TitledPane titledPane;
+    public StringProperty currentFilePath = new SimpleStringProperty();
+    public FileItemProvider fileItemProvider;
 
-    public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView){
+    public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView, String currentFilePath, FileItemProvider fileItemProvider){
         this.titledPane = titledPane;
+        System.out.println(this.titledPane.hashCode() + "   " + this.toString() + "    " + this.currentFilePath.hashCode());
+        this.titledPane.textProperty().bind(this.currentFilePath);
         this.treeView = treeView;
+        this.currentFilePath.setValue(currentFilePath);
+        this.fileItemProvider = fileItemProvider;
     }
 
-    //I would feel so much better if this returned a TreeView
-    public abstract void populateDirectoryView();
+    public void populateDirectoryView(){
+        TreeItem<String> root = new TreeItem<>(currentFilePath.get(), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
-    //Gets a treeItem, follows its parents up the hierarchy, building a string for the absolute path
-    //this is safe from either local or remote fileProvider, only uses tree items
+        treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
+            System.out.println(currentFilePath.getValue());
+            currentFilePath.setValue(buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue()));   //it doesn't seem like this is updating the title pane
+            if(fileItemProvider.children(currentFilePath.get()) != null){
+                addTreeItems(treeItem.getValue(), currentFilePath.get());
+            }
+        });
+
+
+        treeView.setRoot(root);
+        addTreeItems(root, currentFilePath.get());
+        root.setExpanded(false);
+    }
+
+    private void addTreeItems(TreeItem<String> treeItem, String filePath){
+        treeItem.getChildren().remove(0, treeItem.getChildren().size());
+        List<String> childrenAbsolutePaths = fileItemProvider.children(currentFilePath.get());
+        if(childrenAbsolutePaths != null){
+            for(String absoluteFilePath: childrenAbsolutePaths){   //if children is null, don't try to add items!
+                if(fileItemProvider.isDirectory(absoluteFilePath)){
+
+                    TreeItem<String> directoryTreeItem = new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
+                    directoryTreeItem.expandedProperty().addListener(new ChangeListener<Boolean>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                            BooleanProperty booleanProperty = (BooleanProperty) observable;
+                            TreeItem<String> t = (TreeItem<String>) booleanProperty.getBean();
+                            if(!newValue){
+                                t.getChildren().remove(0, t.getChildren().size());
+                                t.getChildren().add(new TreeItem<String>(""));
+                            }else{
+                                currentFilePath.setValue(buildCurrentFilePathFromTreeItem(t));  //it doesn't seem like this is updating the title pane
+                                addTreeItems(t, currentFilePath.get());
+                            }
+                        }
+                    });
+                    directoryTreeItem.getChildren().add(new TreeItem<>(""));
+                    treeItem.getChildren().add(directoryTreeItem);
+                }else{
+                    treeItem.getChildren().add(new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/file.PNG")))));
+                }
+            }
+        }
+    }
+
     public String buildCurrentFilePathFromTreeItem(TreeItem<String> treeItem){
         if(treeItem == null){
             return "";
@@ -29,9 +87,13 @@ public abstract class DirectoryViewManager {
         if(treeItem.getParent() == null){
             return treeItem.getValue();
         }
-        if(treeItem.getParent().getValue().equals("C:/")){
+        if(treeItem.getParent().getValue().equals("C:/") || treeItem.getParent().getValue().equals("/")){
             return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + treeItem.getValue();
         }
         return buildCurrentFilePathFromTreeItem(treeItem.getParent()) + "/" + treeItem.getValue();
+    }
+
+    public void setFileItemProvider(FileItemProvider fileItemProvider) {
+        this.fileItemProvider = fileItemProvider;
     }
 }
