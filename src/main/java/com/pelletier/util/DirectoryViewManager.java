@@ -1,6 +1,8 @@
 package com.pelletier.util;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TitledPane;
@@ -18,37 +20,38 @@ public class DirectoryViewManager {
 
     public TreeView<String> treeView;
     public TitledPane titledPane;
-    public String currentFilePath;
+    public StringProperty currentFilePath = new SimpleStringProperty();
     public FileItemProvider fileItemProvider;
 
     public DirectoryViewManager(TitledPane titledPane, TreeView<String> treeView, String currentFilePath, FileItemProvider fileItemProvider){
         this.titledPane = titledPane;
+        System.out.println(this.titledPane.hashCode() + "   " + this.toString() + "    " + this.currentFilePath.hashCode());
+        this.titledPane.textProperty().bind(this.currentFilePath);
         this.treeView = treeView;
-        this.currentFilePath = currentFilePath;
+        this.currentFilePath.setValue(currentFilePath);
         this.fileItemProvider = fileItemProvider;
     }
 
     public void populateDirectoryView(){
-        TreeItem<String> root = new TreeItem<>(currentFilePath, new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
+        TreeItem<String> root = new TreeItem<>(currentFilePath.get(), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
-            currentFilePath = buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue());   //it doesn't seem like this is updating the title pane
-            titledPane.setText("Local Site: " + currentFilePath);
-
-            if(fileItemProvider.children(currentFilePath) != null){
-                addTreeItems(treeItem.getValue(), currentFilePath);
+            System.out.println(currentFilePath.getValue());
+            currentFilePath.setValue(buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue()));   //it doesn't seem like this is updating the title pane
+            if(fileItemProvider.children(currentFilePath.get()) != null){
+                addTreeItems(treeItem.getValue(), currentFilePath.get());
             }
         });
 
 
         treeView.setRoot(root);
-        addTreeItems(root, currentFilePath);
+        addTreeItems(root, currentFilePath.get());
         root.setExpanded(false);
     }
 
     private void addTreeItems(TreeItem<String> treeItem, String filePath){
         treeItem.getChildren().remove(0, treeItem.getChildren().size());
-        List<String> childrenAbsolutePaths = fileItemProvider.children(currentFilePath);
+        List<String> childrenAbsolutePaths = fileItemProvider.children(currentFilePath.get());
         if(childrenAbsolutePaths != null){
             for(String absoluteFilePath: childrenAbsolutePaths){   //if children is null, don't try to add items!
                 if(fileItemProvider.isDirectory(absoluteFilePath)){
@@ -63,8 +66,8 @@ public class DirectoryViewManager {
                                 t.getChildren().remove(0, t.getChildren().size());
                                 t.getChildren().add(new TreeItem<String>(""));
                             }else{
-                                currentFilePath = buildCurrentFilePathFromTreeItem(t);  //it doesn't seem like this is updating the title pane
-                                addTreeItems(t, currentFilePath);
+                                currentFilePath.setValue(buildCurrentFilePathFromTreeItem(t));  //it doesn't seem like this is updating the title pane
+                                addTreeItems(t, currentFilePath.get());
                             }
                         }
                     });

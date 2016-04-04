@@ -3,7 +3,6 @@ package com.pelletier.util;
 import it.sauronsoftware.ftp4j.FTPClient;
 import it.sauronsoftware.ftp4j.FTPFile;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
