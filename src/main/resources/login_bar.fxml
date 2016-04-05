@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
@@ -10,15 +11,18 @@
 <fx:root prefHeight="37.0" prefWidth="904.0" type="javafx.scene.control.ToolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <items>
         <Label text="Host" />
-        <TextField fx:id="host" text="localhost" prefHeight="25.0" prefWidth="100.0" />
+        <TextField fx:id="host" prefHeight="25.0" prefWidth="100.0" text="localhost" />
         <Label text="Port" />
-        <TextField fx:id="port" text="21" prefHeight="25.0" prefWidth="35.0" />
+        <TextField fx:id="port" prefHeight="25.0" prefWidth="35.0" text="21" />
         <Label text="Username" />
-        <TextField fx:id="username" text="ryan" prefHeight="25.0" prefWidth="100.0" />
+        <TextField fx:id="username" prefHeight="25.0" prefWidth="100.0" text="ryan" />
         <Label text="Password" />
-        <PasswordField fx:id="password" text="." prefHeight="25.0" prefWidth="100.0" />
+        <PasswordField fx:id="password" prefHeight="25.0" prefWidth="100.0" text="." />
         <ToggleButton fx:id="toggleButton" maxWidth="100" minWidth="100" mnemonicParsing="false" onAction="#connectOrDisconnect" onKeyPressed="#connectOrDisconnect" text="  Connect " textAlignment="CENTER" />
-        <Label fx:id="loggedInUser" prefHeight="25.0" prefWidth="130.0" translateX="110.0" />
+        <Label fx:id="loggedInUser" prefHeight="25.0" prefWidth="130.0" translateX="110.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
         <Circle fx:id="circle" fill="#ff1f1f" radius="11.0" stroke="TRANSPARENT" strokeLineJoin="ROUND" strokeType="INSIDE" translateX="110.0" />
     </items>
     <VBox.margin>

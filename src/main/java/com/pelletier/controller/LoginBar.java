@@ -23,7 +23,6 @@ import java.io.IOException;
  */
 public class LoginBar extends ToolBar {
 
-
     @FXML private TextField host;
     @FXML private TextField port;
     @FXML private TextField password;

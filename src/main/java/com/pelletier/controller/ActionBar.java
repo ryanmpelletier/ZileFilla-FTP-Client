@@ -16,6 +16,9 @@ import javafx.scene.control.ToolBar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by ryanb on 4/3/2016.
@@ -126,7 +129,12 @@ public class ActionBar extends ToolBar {
 
     public long getRemoteFileSize(String absoluteRemotePath){
         try{
-            ftpClient.changeDirectory(absoluteRemotePath);
+
+            String[] splitString = absoluteRemotePath.split("/");
+            splitString[splitString.length - 1] = "";
+            String path = Arrays.asList(splitString).stream().collect(Collectors.joining("/"));
+
+            ftpClient.changeDirectory(path);
             FTPFile[] files = ftpClient.list();
             String remoteFileName = getRemoteFileName(absoluteRemotePath);
             for(FTPFile file : files){
