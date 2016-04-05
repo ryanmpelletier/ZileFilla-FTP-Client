@@ -18,7 +18,7 @@
         <Label text="Password" />
         <PasswordField fx:id="password" text="." prefHeight="25.0" prefWidth="100.0" />
         <ToggleButton fx:id="toggleButton" maxWidth="100" minWidth="100" mnemonicParsing="false" onAction="#connectOrDisconnect" onKeyPressed="#connectOrDisconnect" text="  Connect " textAlignment="CENTER" />
-        <TextField fx:id="loggedInUser" editable="false" prefHeight="25.0" prefWidth="130.0" translateX="110.0" />
+        <Label fx:id="loggedInUser" prefHeight="25.0" prefWidth="130.0" translateX="110.0" />
         <Circle fx:id="circle" fill="#ff1f1f" radius="11.0" stroke="TRANSPARENT" strokeLineJoin="ROUND" strokeType="INSIDE" translateX="110.0" />
     </items>
     <VBox.margin>

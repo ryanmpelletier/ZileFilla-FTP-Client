@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Button?>
-<fx:root  prefHeight="95.0" prefWidth="905.0" type="javafx.scene.control.ToolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root prefHeight="95.0" prefWidth="905.0" type="javafx.scene.control.ToolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <items>
-        <Button fx:id="upload" mnemonicParsing="false" prefHeight="62.0" prefWidth="93.0" text="Upload" onAction="#upload" />
-        <Button fx:id="download" mnemonicParsing="false" prefHeight="62.0" prefWidth="93.0" text="Download" onAction="#download" />
-        <ProgressBar fx:id="progressBar" prefHeight="58.0" prefWidth="685.0" progress="0.0" />
+        <Button fx:id="upload" mnemonicParsing="false" onAction="#upload" prefHeight="31.0" prefWidth="93.0" text="Upload" />
+        <Button fx:id="download" mnemonicParsing="false" onAction="#download" prefHeight="31.0" prefWidth="93.0" text="Download" />
+        <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="91.0" text="Delete" />
+        <ProgressBar fx:id="progressBar" prefHeight="28.0" prefWidth="529.0" progress="0.0" />
+        <ProgressIndicator fx:id="progressIndicator" prefHeight="67.0" prefWidth="59.0" progress="0.0">
+         <padding>
+            <Insets top="15.0" />
+         </padding>
+      </ProgressIndicator>
     </items>
 </fx:root>

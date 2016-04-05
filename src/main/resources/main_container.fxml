@@ -7,8 +7,11 @@
 <?import com.pelletier.controller.LoginBar?>
 <?import com.pelletier.controller.DirectoryViewController?>
 <?import com.pelletier.controller.ConsoleController?>
-
 <?import com.pelletier.controller.ActionBar?>
+
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pelletier.controller.MainController">
    <children>
       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="596.0">
@@ -16,16 +19,6 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>
@@ -39,5 +32,10 @@
          </children>
       </HBox>
        <ActionBar fx:id="actionBar"/>
+       <ImageView fx:id="bottomImage">
+           <image>
+               <Image url="images/ZileFilla.PNG"/>
+           </image>
+       </ImageView>
    </children>
 </VBox>

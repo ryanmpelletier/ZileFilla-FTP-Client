@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
@@ -27,7 +28,7 @@ public class LoginBar extends ToolBar {
     @FXML private TextField port;
     @FXML private TextField password;
     @FXML private TextField username;
-    @FXML private TextField loggedInUser;
+    @FXML private Label loggedInUser;
     @FXML private Circle circle;
     @FXML private ToggleButton toggleButton;
 
@@ -64,7 +65,7 @@ public class LoginBar extends ToolBar {
 
                 if(ftpClient.isAuthenticated()){
                     ConsoleManager.writeText("Connected");
-                    loggedInUser.setText(username.getText());
+                    loggedInUser.setText("User: " + username.getText());
                     circle.setFill(Paint.valueOf("green"));
                     toggleButton.setText("Disconnect");
                     isLoggedIn.setValue(true);

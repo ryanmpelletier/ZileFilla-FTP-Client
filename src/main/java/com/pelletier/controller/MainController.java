@@ -24,6 +24,8 @@ public class MainController {
                 actionBar.setFtpClient(loginBar.getFtpClient());
                 actionBar.localFilePathProperty().bind(localDirectoryView.getDirectoryViewManager().currentFilePathProperty());
                 actionBar.remoteFilePathProperty().bind(remoteDirectoryView.getDirectoryViewManager().currentFilePathProperty());
+            }else{
+                remoteDirectoryView.getDirectoryView().getRoot().getChildren().remove(0, remoteDirectoryView.getDirectoryView().getRoot().getChildren().size());
             }
         });
     }
