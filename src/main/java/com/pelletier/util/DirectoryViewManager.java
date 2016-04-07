@@ -32,7 +32,7 @@ public class DirectoryViewManager {
     }
 
     public void populateDirectoryView(){
-        TreeItem<String> root = new TreeItem<>(currentFilePath.get(), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+        TreeItem<String> root = new TreeItem<>(currentFilePath.get(), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
 
         treeView.getSelectionModel().selectedItemProperty().addListener((treeItem, oldValue, newValue) -> {
             currentFilePath.setValue(buildCurrentFilePathFromTreeItem((TreeItem<String>) treeItem.getValue()));   //it doesn't seem like this is updating the title pane
@@ -54,7 +54,7 @@ public class DirectoryViewManager {
             for(String absoluteFilePath: childrenAbsolutePaths){
                 if(fileItemProvider.isDirectory(absoluteFilePath)){
 
-                    TreeItem<String> directoryTreeItem = new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/folder.PNG"))));
+                    TreeItem<String> directoryTreeItem = new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/folder.PNG"))));
                     directoryTreeItem.expandedProperty().addListener(new ChangeListener<Boolean>() {
                         @Override
                         public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -72,7 +72,7 @@ public class DirectoryViewManager {
                     directoryTreeItem.getChildren().add(new TreeItem<>(""));
                     treeItem.getChildren().add(directoryTreeItem);
                 }else{
-                    treeItem.getChildren().add(new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/file.PNG")))));
+                    treeItem.getChildren().add(new TreeItem<>(fileItemProvider.getName(absoluteFilePath), new ImageView(new Image(getClass().getResourceAsStream("/images/file.png")))));
                 }
             }
         }

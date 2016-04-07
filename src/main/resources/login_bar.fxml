@@ -23,7 +23,11 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-        <Circle fx:id="circle" fill="#ff1f1f" radius="11.0" stroke="TRANSPARENT" strokeLineJoin="ROUND" strokeType="INSIDE" translateX="110.0" />
+      <ImageView fx:id="imageView" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" translateX="80.0">
+         <image>
+            <Image url="@images/red.png" />
+         </image>
+      </ImageView>
     </items>
     <VBox.margin>
         <Insets />

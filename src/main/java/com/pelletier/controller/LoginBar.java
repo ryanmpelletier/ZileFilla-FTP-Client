@@ -12,12 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-
-import java.awt.*;
-import java.io.Console;
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import java.io.IOException;
 
 /**
@@ -30,8 +26,8 @@ public class LoginBar extends ToolBar {
     @FXML private TextField password;
     @FXML private TextField username;
     @FXML private Label loggedInUser;
-    @FXML private Circle circle;
     @FXML private ToggleButton toggleButton;
+    @FXML private ImageView imageView;
 
 
     BooleanProperty isLoggedIn = new SimpleBooleanProperty();
@@ -58,7 +54,7 @@ public class LoginBar extends ToolBar {
                 loggedInUser.setText("");
                 toggleButton.setText("  Connect ");
                 isLoggedIn.setValue(false);
-                circle.setFill(Paint.valueOf("#ff3300"));
+                imageView.setImage(new Image("/images/red.png"));
                 ConsoleManager.writeText("Disconnected");
             }else{
                 ftpClient.connect(host.getText(),Integer.parseInt(port.getText()));
@@ -67,7 +63,7 @@ public class LoginBar extends ToolBar {
                 if(ftpClient.isAuthenticated()){
                     ConsoleManager.writeText("Connected");
                     loggedInUser.setText("User: " + username.getText());
-                    circle.setFill(Paint.valueOf("#66ff66"));
+                    imageView.setImage(new Image("/images/green.png"));
                     toggleButton.setText("Disconnect");
                     isLoggedIn.setValue(true);
                 }else{
