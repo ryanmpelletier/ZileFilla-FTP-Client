@@ -5,13 +5,14 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.pelletier.controller.LoginBar?>
-<?import com.pelletier.controller.DirectoryViewController?>
 <?import com.pelletier.controller.ConsoleController?>
 <?import com.pelletier.controller.ActionBar?>
 
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import com.pelletier.controller.LocalDirectoryViewController?>
+<?import com.pelletier.controller.RemoteDirectoryViewController?>
 <VBox fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pelletier.controller.MainController">
    <children>
       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="596.0">
@@ -26,15 +27,15 @@
        <LoginBar fx:id="loginBar"/>
       <HBox minHeight="-Infinity" prefHeight="377.0" prefWidth="903.0">
          <children>
-            <DirectoryViewController type="local" fx:id="localDirectoryView" />
-            <DirectoryViewController type="remote" fx:id="remoteDirectoryView" />
+            <LocalDirectoryViewController fx:id="localDirectoryView" />
+            <RemoteDirectoryViewController fx:id="remoteDirectoryView" />
             <ConsoleController/>
          </children>
       </HBox>
        <ActionBar fx:id="actionBar"/>
        <ImageView fx:id="bottomImage">
            <image>
-               <Image url="images/ZileFilla.PNG"/>
+               <Image url="ZileFilla.PNG"/>
            </image>
        </ImageView>
    </children>
