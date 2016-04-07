@@ -18,19 +18,12 @@ public class DirectoryViewController extends TitledPane {
 
     public String type;
     @FXML public TreeView<String> directoryView;
-    DirectoryViewManager directoryViewManager = null;
+    public DirectoryViewManager directoryViewManager = null;
 
     public void initialize(){
-        if(type.equals("local")) {
-            directoryViewManager = new DirectoryViewManager(this, directoryView, "C:/", new LocalFileItemProvider());
-            directoryViewManager.populateDirectoryView();
-        }
     }
 
-    public DirectoryViewController(@NamedArg("type") String type){
-        if((!type.equals("local") && !type.equals("remote"))){
-            type = "local";
-        }
+    public DirectoryViewController(){
         this.type = type;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/directory_view.fxml"));
         fxmlLoader.setRoot(this);

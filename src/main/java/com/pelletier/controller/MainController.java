@@ -12,8 +12,8 @@ public class MainController {
 
     @FXML public LoginBar loginBar;
     @FXML public ActionBar actionBar;
-    @FXML public DirectoryViewController localDirectoryView;
-    @FXML public DirectoryViewController remoteDirectoryView;
+    @FXML public LocalDirectoryViewController localDirectoryView;
+    @FXML public RemoteDirectoryViewController remoteDirectoryView;
     @FXML public TextArea console;
 
     public void initialize(){
