@@ -35,7 +35,7 @@
        <ActionBar fx:id="actionBar"/>
        <ImageView fx:id="bottomImage">
            <image>
-               <Image url="images/ZileFilla.PNG"/>
+               <Image url="ZileFilla.PNG"/>
            </image>
        </ImageView>
    </children>
