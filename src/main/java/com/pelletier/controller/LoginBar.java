@@ -14,7 +14,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.io.Console;
 import java.io.IOException;
 
@@ -54,9 +56,9 @@ public class LoginBar extends ToolBar {
             if(getIsLoggedIn()){
                 ftpClient.disconnect(true); //not sure what this does
                 loggedInUser.setText("");
-                circle.setFill(Paint.valueOf("red"));
                 toggleButton.setText("  Connect ");
                 isLoggedIn.setValue(false);
+                circle.setFill(Paint.valueOf("#ff3300"));
                 ConsoleManager.writeText("Disconnected");
             }else{
                 ftpClient.connect(host.getText(),Integer.parseInt(port.getText()));
@@ -65,16 +67,16 @@ public class LoginBar extends ToolBar {
                 if(ftpClient.isAuthenticated()){
                     ConsoleManager.writeText("Connected");
                     loggedInUser.setText("User: " + username.getText());
-                    circle.setFill(Paint.valueOf("green"));
+                    circle.setFill(Paint.valueOf("#66ff66"));
                     toggleButton.setText("Disconnect");
                     isLoggedIn.setValue(true);
                 }else{
-                    System.out.println("Crap dude we aren't authenticated!");
+                    ConsoleManager.writeText("Not Authenticated");
                 }
             }
 
         }catch(Exception e){
-            e.printStackTrace();
+            ConsoleManager.writeText(e.getLocalizedMessage());
         }
 
     }
